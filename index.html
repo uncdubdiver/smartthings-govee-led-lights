@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Lang" content="en">
+		<meta name="author" content="Dean Berman - DB Development">
+		<meta http-equiv="Reply-to" content="db@deanberman.com">
+		<meta name="generator" content="PhpED 8.0">
+		<meta name="description" content="Govee LED Lights device configuration page">
+		<meta name="keywords" content="">
+		<meta name="creation-date" content="11/09/2020">
+		<meta name="revisit-after" content="15 days">
+		<title>Govee LED Lights - Device Configuration</title>
+		
+		<!-- Latest available jQuery v3.5.1 -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#config-btn').bind('click', function() {
+					var apikey = $('#apikey').val();
+					
+					if(apikey == '') {
+						alert('Missing API Key. Please enter it in and try again.');
+						return false;
+					}
+					
+					$('#config-results').html('Loading, please wait...');
+					
+					$.ajax({
+						url: 'https://developer-api.govee.com/v1/devices',
+						type: 'GET',
+						headers: {
+							'Govee-API-Key': apikey
+						},
+						success: function(data) {
+							var resp = '';
+							
+							if(data.code != '200' || data.message != 'Success') {
+								alert('There was a problem getting your Govee devices. Please confirm your Govee API Key and try again.');
+								return false;
+							}
+							
+							if((data.data.devices).length == 0) {
+								alert('You have no accessible devices setup within your Govee account at this time.');
+								return false;
+							}
+							
+							resp += '<div class="row"><div class="col-xs-12">&nbsp;</div></div>';
+							resp += '<div class="row">';
+								resp += '<div class="col-xs-3"><strong>Device Name</strong></div>';
+								resp += '<div class="col-xs-2"><strong>Model</strong></div>';
+								resp += '<div class="col-xs-7"><strong>Device ID</strong></div>';
+								
+								//	Now to loop throught the devices and print accordingly...
+								for(var a = 0; a < (data.data.devices).length; a++) {
+									resp += '<div class="col-xs-3">' + data.data.devices[a].deviceName + '</div>';
+									resp += '<div class="col-xs-2">' + data.data.devices[a].model + '</div>';
+									resp += '<div class="col-xs-7">' + data.data.devices[a].device + '</div>';
+								}
+							resp += '</div>';
+							resp += '<div class="row"><div class="col-xs-12">&nbsp;</div></div>';
+							
+							resp += '<div class="row">';
+								resp += '<div class="col-xs-12">Please use the list below to populate the Samsung SmartThings Device preferences page (see setup steps for <strong>Device</strong>).</div>';
+							resp += '</div>';
+							
+							$('#config-results').html(resp);
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							alert('There was an error with your Govee API Key. Please confirm and try again.');
+							return false;
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container" style="padding-top:25px;">
+			<h2>Govee LED Lights - Device Configuration</h2>
+			<h4>DB Development - Dean Berman</h4>
+			<h6>Created/Last Updated: 2020-11-09</h6>
+			<br />
+			
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+				<li role="presentation"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
+				<li role="presentation"><a href="#" role="tab" data-toggle="tab">GitHub</a></li>
+			</ul>
+			
+			<div class="tab-content">
+				<div id="home" class="tab-pane fade active in">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							The Govee LED Lights SmartThings Device Type Handler was generated to fill a need with accessing the WiFi connected Govee LED Lights.
+							<br /><br />
+							The Device Type Handler is built to handle any of the existing WiFi connected Govee LED Lights that are accesible through their API.
+							<br /><br />
+							The following list of model numbers are currently supported:
+							<ul>
+								<li>H6160</li>
+								<li>H6163</li>
+								<li>H6104</li>
+								<li>H6109</li>
+								<li>H6110</li>
+								<li>H6117</li>
+								<li>H6159</li>
+								<li>H7021</li>
+								<li>H7022</li>
+								<li>H6086</li>
+								<li>H6089</li>
+								<li>H6182</li>
+								<li>H6085</li>
+								<li>H7014</li>
+								<li>H5081</li>
+								<li>H6188</li>
+								<li>H6135</li>
+								<li>H6137</li>
+								<li>H6141</li>
+								<li>H6142</li>
+								<li>H6195</li>
+								<li>H6196</li>
+								<li>H7005</li>
+								<li>H6083</li>
+								<li>H6002</li>
+								<li>H6003</li>
+								<li>H6148</li>
+							</ul>
+							<br />
+							To get your Govee LED Lights device setup properly within Samsung SmartThings, please follow the steps below.
+							<br />
+							<h4>Device Type Handler</h4>
+							<ol>
+								<li>
+									Login to the Samsung SmartThings account management interface:
+									<a href="https://account.smartthings.com/login" target="_blank">https://account.smartthings.com/login</a>
+								</li>
+								<li>In the <em>SmartThings Groovy IDE</em>, navigate to the <em>My Device Handlers</em> link/page.</li>
+								<li>In the <em>Device Handlers</em> page, click the [+ Create New Device Handler] button.</li>
+								<li>In the <em>Create New Device Handler</em> page, select the <em>From Code</em> tab.</li>
+								<li>From the DB Development Govee LED Strips (DBDEV) GitHub page, copy-and-paste in the code for the Device Type Handler in this form/page.</li>
+								<li>Click [Create] to save and continue.</li>
+							</ol>
+							
+							<h4>Device</h4>
+							<ol>
+								<li>
+									Login to the Samsung SmartThings account management interface:
+									<a href="https://account.smartthings.com/login" target="_blank">https://account.smartthings.com/login</a>
+								</li>
+								<li>In the <em>SmartThings Groovy IDE</em>, navigate to the <em>My Devices</em> link/page.</li>
+								<li>In the <em>Devices</em> page, click the [+ New Device] button.</li>
+								<li>
+									In the <em>Create Device</em> page, setup the following settings:
+									<ul>
+										<li>Name: <em>Setup your device name accordingly</em></li>
+										<li>Label: <em>I usually just use the same Name</em></li>
+										<li>Zigbee Id: <em>&lt;leave blank&gt;</em></li>
+										<li>Device Network Id: <em>Use something that is only characters and dashes or underscores (something unique)</em></li>
+										<li>Type: <em>Select Govee LED Strips (DBDEV) from the dropdown list</em></li>
+										<li>Version: <em>Select Self-Published</em></li>
+										<li>Location: <em>Select Home (or whatever your location name is)</em></li>
+										<li>Hub: <em>Select SmartThings Hub (or whatever your hub name is)</em></li>
+										<li>Group: <em>&lt;leave blank&gt;</em></li>
+									</ul>
+									Once completed, click [Create].
+								</li>
+								<li>Once the page reloads, in the left column, for <em>Preferences</em>, click <em>edit</em>.</li>
+								<li>
+									In the edit preferences page, 3 form fields will be preset. Set each of these form fields accordingly below:
+									<ul>
+										<li><strong>Govee API Key - Designated Govee API Key for accessing their system</strong> - this value is given to you by Govee from their app (should be found on the Configuration tab)</li>
+										<li><strong>Govee KED Device ID - Device ID for the Govee LED Lights</strong> - can be found on the Configuration tab</li>
+										<li><strong>Govee LED Model - Model number of the Govee LED Lights</strong> - can be found on the Configuration tab</li>
+									</ul>
+								</li>
+								<li>Once completed, click [Save].</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div id="config" class="tab-pane fade">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							The following form/details below will allow you to confirm your Samsung SmartThings Device preferences accordingly.
+							<br /><br />
+							<label>Govee API Key:</label> <input type="text" name="apikey" id="apikey" class="form-control">
+							<small><em>Designated Govee API Key for accessing their system</em></small>
+							<br /><br />
+							<button name="config-btn" id="config-btn" class="btn btn-sm btn-info">Get Configuration</button>
+							<div id="config-results"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
