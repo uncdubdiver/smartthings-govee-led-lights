@@ -121,7 +121,8 @@ preferences {
 
 // parse events into attributes
 def parse(description) {
-	log.debug "parse() - $description"
+	log.trace "Executing 'parse($description)'..."
+	
 	def results = []
 	def map = description
 	if (description instanceof String)  {
@@ -136,7 +137,7 @@ def parse(description) {
 
 // handle commands
 def on() {
-	log.trace "Method on()..."
+	log.trace "Executing 'on()'..."
 	
 	callURL('devicecontrol-power', "on")
 	
@@ -144,7 +145,7 @@ def on() {
 }
 
 def off() {
-	log.trace "Method off()..."
+	log.trace "Executing 'off()'..."
 	
 	callURL('devicecontrol-power', "off")
 	
@@ -152,7 +153,8 @@ def off() {
 }
 
 def nextLevel() {
-	log.trace "nextLevel()"
+	log.trace "Executing 'nextLevel()'..."
+	
 	def level = device.latestValue("level") as Integer ?: 0
 	if (level <= 100) {
 		level = Math.min(25 * (Math.round(level / 25) + 1), 100) as Integer
@@ -164,7 +166,8 @@ def nextLevel() {
 }
 
 def setLevel(percent, rate = null) {
-	log.debug "setLevel: ${percent}, this"
+	log.trace "Executing 'setLevel($percent, this)'..."
+	
 	sendEvent(name: "level", value: percent)
 	def power = Math.round(percent / 1.175) * 0.1
 	
@@ -174,17 +177,20 @@ def setLevel(percent, rate = null) {
 }
 
 def setSaturation(percent) {
-	log.debug "setSaturation: ${percent}, $this"
+	log.trace "Executing 'setSaturation($percent)'..."
+	
 	sendEvent(name: "saturation", value: percent)
 }
 
 def setHue(percent) {
-	log.debug "setHue: ${percent}, $this"
+	log.trace "Executing 'setHue($percent)'..."
+	
 	sendEvent(name: "hue", value: percent)
 }
 
 def setColor(value) {
-	log.debug "setColor: ${value}, $this"
+	log.trace "Executing 'setColor($value)'..."
+	
 	if (value.hue) { sendEvent(name: "hue", value: value.hue)}
 	if (value.saturation) { sendEvent(name: "saturation", value: value.saturation)}
 	if (value.hex) { sendEvent(name: "color", value: value.hex)}
@@ -201,11 +207,14 @@ def setColor(value) {
 }
 
 def reset() {
-	log.debug "Executing 'reset'"
+	log.trace "Executing 'reset()'..."
+	
 	setAdjustedColor([level:100, hex:"#90C638", saturation:56, hue:23])
 }
 
 def setAdjustedColor(value) {
+	log.trace "Executing 'setAdjustedColor($value)'..."
+	
 	if (value) {
 		log.trace "setAdjustedColor: ${value}"
 		def adjusted = value + [:]
@@ -216,8 +225,29 @@ def setAdjustedColor(value) {
 	}
 }
 
+def installed() {
+	log.trace "Executing 'installed()'.."
+	refresh()
+}
+
+def updated() {
+	log.trace "Executing 'updated()'.."
+	refresh()
+	
+	// unschedule()
+	// runEvery1Minutes(refresh)
+	// runIn(2, refresh)
+}
+
+def poll() {
+	log.trace "Executing 'poll()'..."
+	
+	refresh()
+}
+
 def refresh() {
-	log.debug "Executing 'refresh'"
+	log.trace "Executing 'refresh()'..."
+	
 	def ret = callURL('devicestate', '')
 	
 	// Handling the power state
@@ -236,9 +266,16 @@ def refresh() {
 	def hex  = colorUtil.rgbToHex(rgb[0], rgb[1], rgb[2])
 	// log.debug "HEX=${hex}"
 	sendEvent(name: "color", value: hex)
+	
+	// Set it to run every 5 minutes
+	// runEvery5Minutes(refresh)
+	// Set it to run once a minute (continuous polling)
+	runEvery1Minute(refresh)
 }
 
 def adjustOutgoingHue(percent) {
+	log.trace "Executing 'adjustOutgoingHue($percent)'..."
+	
 	def adjusted = percent
 	if (percent > 31) {
 		if (percent < 63.0) {
@@ -268,7 +305,8 @@ def adjustOutgoingHue(percent) {
 
 // TODO: implement event handlers
 def callURL(apiAction, details) {
-	log.debug "- Running callURL(${apiAction}, ${details}) method..."
+	log.trace "Executing 'callURL($apiAction, $details)'..."
+	
 	// log.trace "[SETTINGS] APIKEY=${settings.apikey}, ID=${settings.deviceID}, MODEL=${settings.modelNum}"
 	
     def params
