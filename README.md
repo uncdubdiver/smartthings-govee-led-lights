@@ -7,7 +7,7 @@ Govee LED Light Strips
 Govee API Key (generated from the Govee mobile app)
 
 ### To integrate this into SmartThings, you'll follow these steps:
-Please execute the index.html file locally to successfully integrate into Samsung SmartThings.
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Please execute the index.html file locally to successfully integrate into Samsung SmartThings.
 This index.html file will provide you step-by-step procedures on add the device and device type handlers into your SmartThings account.  You provide it your Govee API Key and it will retrieve the list of device ids, names, and models for the device preferences.
 
 ### DISCLOSURE
