@@ -252,7 +252,7 @@ def refresh() {
 	
 	// Handling the power state
 	def power = ret.data["properties"][1]["powerState"]
-	// log.debug "POWER=${power}"
+	log.debug "POWER=${power}"
 	sendEvent(name: "switch", value: power)
 	
 	// Handling the brightness level
@@ -270,6 +270,7 @@ def refresh() {
 	// Set it to run every 5 minutes
 	// runEvery5Minutes(refresh)
 	// Set it to run once a minute (continuous polling)
+    log.trace "...executing runEvery1Minute(refresh)..."
 	runEvery1Minute(refresh)
 }
 
