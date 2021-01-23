@@ -306,28 +306,27 @@ def adjustOutgoingHue(percent) {
 def callURL(apiAction, details) {
 	log.trace "Executing 'callURL($apiAction, $details)'..."
 	
-	log.trace "[SETTINGS] APIKEY=${settings.apikey}, ID=${settings.deviceID}, MODEL=${settings.modelNum}"
+	// log.trace "[SETTINGS] APIKEY=${settings.apikey}, ID=${settings.deviceID}, MODEL=${settings.modelNum}"
 	
-    def method
     def params
 	if(apiAction == 'devices') {
-        method = 'GET'
         params = [
+            method: 'GET',
             uri   : "https://developer-api.govee.com",
             path  : '/v1/devices',
 			headers: ["Govee-API-Key": settings.apikey, "Content-Type": "application/json"],
         ]
 	} else if(apiAction == 'devicestate') {
-        method = 'GET'
         params = [
+            method: 'GET',
             uri   : "https://developer-api.govee.com",
             path  : '/v1/devices/state',
 			headers: ["Govee-API-Key": settings.apikey, "Content-Type": "application/json"],
 			query: [device: settings.deviceID, model: settings.modelNum],
         ]
 	} else if(apiAction == 'devicecontrol-power') {
-        method = 'PUT'
         params = [
+            method: 'PUT',
             uri   : "https://developer-api.govee.com",
             path  : '/v1/devices/control',
 			headers: ["Govee-API-Key": settings.apikey, "Content-Type": "application/json"],
@@ -335,8 +334,8 @@ def callURL(apiAction, details) {
 			body: [device: settings.deviceID, model: settings.modelNum, cmd: ["name": "turn", "value": details]],
         ]
 	} else if(apiAction == 'devicecontrol-brightness') {
-        method = 'PUT'
         params = [
+            method: 'PUT',
             uri   : "https://developer-api.govee.com",
             path  : '/v1/devices/control',
 			headers: ["Govee-API-Key": settings.apikey, "Content-Type": "application/json"],
@@ -345,6 +344,7 @@ def callURL(apiAction, details) {
         ]
 	} else if(apiAction == 'devicecontrol-rgb') {
         params = [
+            method: 'PUT',
             uri   : "https://developer-api.govee.com",
             path  : '/v1/devices/control',
 			headers: ["Govee-API-Key": settings.apikey, "Content-Type": "application/json"],
@@ -356,7 +356,7 @@ def callURL(apiAction, details) {
 	/*
     log.debug params
     log.debug "APIACTION=${apiAction}"
-    log.debug "METHOD=${method}"
+    log.debug "METHOD=${params.method}"
     log.debug "URI=${params.uri}${params.path}"
     log.debug "HEADERS=${params.headers}"
     log.debug "QUERY=${params.query}"
@@ -364,7 +364,7 @@ def callURL(apiAction, details) {
 	//*/
 	
 	try {
-		if(method == 'GET') {
+		if(params.method == 'GET') {
 			httpGet(params) { resp ->
 				//log.debug "RESP="
 				//log.debug "HEADERS="+resp.headers
@@ -374,7 +374,7 @@ def callURL(apiAction, details) {
 				
 				return resp.data
 			}
-		} else if(method == 'PUT') {
+		} else if(params.method == 'PUT') {
 			httpPutJson(params) { resp ->
 				//log debug "RESP="
 				//log.debug "HEADERS="+resp.headers
