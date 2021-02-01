@@ -39,6 +39,14 @@ This index.html file will provide you step-by-step procedures on add the device 
 - H6003
 - H6148
 
+### DEBUGGING/TROUBLESHOOTING
+If you edit the device type handler in your Samsung SmartThings account, search for the "refresh()" function and enable debugging by setting the following:  
+```groovy
+set_DEBUG("off")
+...to...
+set_DEBUG("on")
+```
+
 ### DTH DISCLAIMER
 After further testing, the API call for getting the device state may not work for all supported Govee models listed above.  Determing if it's a problem with the Govee API or if it's not supported due to the nature of the device model.
 
