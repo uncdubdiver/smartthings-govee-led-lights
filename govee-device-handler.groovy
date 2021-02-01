@@ -265,11 +265,16 @@ def refresh() {
 	// log.debug "HEX=${hex}"
 	sendEvent(name: "color", value: hex)
 	
-	unschedule()
+	// unschedule()
 	// Set it to run every 5 minutes
 	// runEvery5Minutes(refresh)
 	// Set it to run once a minute (continuous polling)
-	runEvery1Minute(refresh)
+	// runEvery1Minute(refresh)
+	
+	unschedule()
+	// Set it to run once a minute (continuous polling)
+	if(get_DEBUG() == "on") { log.debug "[refresh()] ---- Polling/Refresh every 2 minutes" }
+	runIn(120, refresh)
 }
 
 def adjustOutgoingHue(percent) {
