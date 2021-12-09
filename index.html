@@ -40,13 +40,15 @@
 					$('#config-results').html('Loading, please wait...');
 					
 					$.ajax({
-						url: 'https://developer-api.govee.com/v1/devices',
+						url: 'https://www.deanberman.com/govee/smartthings/_devices.php',
 						type: 'GET',
-						headers: {
+						data: {
 							'Govee-API-Key': apikey
 						},
 						success: function(data) {
 							var resp = '';
+							
+							data = JSON.parse(data);
 							
 							if(data.code != '200' || data.message != 'Success') {
 								alert('There was a problem getting your Govee devices. Please confirm your Govee API Key and try again.');
