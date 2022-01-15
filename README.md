@@ -10,7 +10,7 @@ Govee API Key (generated from the Govee mobile app)
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) To properly integration into Samsung SmartThings, please go to the following URL: https://www.deanberman.com/govee/smartthings/
 This page will provide you step-by-step procedures on add the device and device type handlers into your SmartThings account.  You provide it your Govee API Key and it will retrieve the list of device ids, names, and models for the device preferences.
 
-If you are more comfortable running the file(s) locally and have a webservice and php enabled locally, then you may download the index.html and the \_devices.php file and implement them locally (just update the index.html file for the URL reference location).
+To run locally, install [Docker](https://docs.docker.com/get-docker/) then run the command ```docker compose up``` and navigate to http://localhost:8000.
 
 #### The following list of model numbers are currently supported (according to Govee API document):
 - H6160

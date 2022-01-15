@@ -1,4 +1,8 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+$allowed_domains = [
+    'http://127.0.0.1:8000'
+];
 	/*
 	print '<div align="left"><pre>';
 	print_r($_REQUEST);
