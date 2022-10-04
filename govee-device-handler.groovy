@@ -12,6 +12,7 @@
 metadata {
 	definition (
 		name: "Govee LED Strips (DBDEV)",
+		version: "v2",
 		namespace: "dbdevelopment",
 		author: "Dean Berman",
 		description: "Govee LED Strips Integration",
@@ -114,6 +115,7 @@ preferences {
         input("apikey", "apikey", title: "Govee API Key", description: "Designated Govee API Key for accessing their system", required: true)
         input("deviceID", "deviceid", title: "Govee KED Device ID", description: "Device ID for the Govee LED Lights", required: true)
         input("modelNum", "modelnum", title: "Govee LED Model", description: "Model number of the Govee LED Lights", required: true)
+        input("refreshTimeSec", "refreshTimeSec", title: "Polling/Refresh Time", description: "Number of seconds between refreshing (minimum 300)", required: true)
 	}
 }
 
@@ -273,8 +275,8 @@ def refresh() {
 	
 	unschedule()
 	// Set it to run once a minute (continuous polling)
-	if(get_DEBUG() == "on") { log.debug "[refresh()] ---- Polling/Refresh every 2 minutes" }
-	runIn(120, refresh)
+	if(get_DEBUG() == "on") { log.debug "[refresh()] ---- Polling/Refresh every ${settings.refreshTimeSec}" }
+	runIn(settings.refreshTimeSec as int, refresh)
 }
 
 def adjustOutgoingHue(percent) {
